@@ -1,6 +1,5 @@
-from fastapi import FastAPI, Depends
-from session import get_db, Base, engine
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
+from session import Base, engine
 from api.api_vi.routers import user_routes
 
 app = FastAPI()
