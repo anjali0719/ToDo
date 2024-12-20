@@ -17,7 +17,7 @@ logs/
 Thumbs.db
 
 # IDE/Editor configurations
-**/.vscode/
+.vscode/
 .idea/
 
 # Dependency files (if using Pipenv or Poetry)
