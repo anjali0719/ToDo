@@ -12,6 +12,10 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     hashed_password = Column(String)
 
+
+    def __repr__(self):
+        return f"User: {self.first_name} {self.last_name}".strip()
+
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}".strip()

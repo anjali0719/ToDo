@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-class CreateUserRequest(BaseModel):
+class CreateUser(BaseModel):
     first_name: str
     last_name: str
     password: str
@@ -10,7 +10,7 @@ class CreateUserRequest(BaseModel):
         orm_mode = True
 
 
-class ChangePasswordRequest(BaseModel):
+class ChangePassword(BaseModel):
     old_password: str
     new_password: str = Field(min_length=8)
 

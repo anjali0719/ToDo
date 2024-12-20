@@ -4,7 +4,6 @@ from jose import jwt, JWTError
 from models.users import User
 from typing import Annotated
 from fastapi import Depends, HTTPException, status
-from ..schemas.user_schema import CreateUserRequest, ChangePasswordRequest
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 from session import get_db
@@ -43,7 +42,7 @@ def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email = payload.get('sub')
         user_id = payload.get('id')
-        if email is None and user_id is None:
+        if email is None or user_id is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Email and password not provided"
@@ -55,45 +54,3 @@ def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="User not authorized"
         )
-
-
-def add_user(req: CreateUserRequest, db: Session):
-    user = User(
-        first_name= req.first_name,
-        last_name= req.last_name,
-        hashed_password= bcrypt_context.hash(req.password),
-        email= req.email,
-        is_active= True
-    )
-
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return {
-        'first_name': user.first_name,
-        'last_name': user.last_name,
-        'email': user.email,
-        'is_active': user.is_active
-    }
-
-# requires authentication
-def change_user_password(req: ChangePasswordRequest, db: Session, user: Annotated[dict, Depends(get_current_user)]):
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User not authenticated"
-        )
-    
-    user_model = db.query(User).filter(User.id == user.get('id')).first()
-    if not bcrypt_context.verify(req.old_password, user_model.hashed_password):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Perhaps old password is incorrect"
-        )
-    
-    user_model.hashed_password = req.new_password
-    db.add(user_model)
-    db.commit()
-    db.refresh(user_model)
-
-
