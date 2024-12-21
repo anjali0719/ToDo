@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from session import Base, engine
-from api.api_vi.routers import user_routes, todo_routes
+from api.api_v1.routers import user_routes, todo_routes
 
 app = FastAPI()
 Base.metadata.create_all(engine)
