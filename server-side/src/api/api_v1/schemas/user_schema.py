@@ -7,7 +7,7 @@ class CreateUser(BaseModel):
     email: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ChangePassword(BaseModel):
@@ -15,5 +15,5 @@ class ChangePassword(BaseModel):
     new_password: str = Field(min_length=8)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
