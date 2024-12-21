@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-class CreateTodo(BaseModel):
+class CreateOrUpdateTodo(BaseModel):
     title: str = Field(min_length=3)
     description: str
     add_to_favourites: bool
