@@ -11,10 +11,9 @@ app.include_router(todo_routes.router)
 
 # TO BE IMPLEMENETED:
 '''
-1. Use Mapped and mapped_column instead of Column
-2. Use alembic and make changes to ToDo model: add created_at and updated_at fields
-3. Handle exceptions/errors for all the created routers
-4. Implement forgot password
+1. forgot password
+2. pagination
+3. Order the todo's in order by scheduled_for > updated_at
 
 We can try this(using celery):
 Mark a todo for some scheduled date, send the user a reminder and then once date has been passed mark the status as incomplete or complete
