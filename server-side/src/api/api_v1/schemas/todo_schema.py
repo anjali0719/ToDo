@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel, Field
 
 class CreateOrUpdateTodo(BaseModel):
@@ -5,6 +6,7 @@ class CreateOrUpdateTodo(BaseModel):
     description: str
     add_to_favourites: bool
     completed: bool
+    scheduled_for: datetime
     # user_id: int
 
     class Config:

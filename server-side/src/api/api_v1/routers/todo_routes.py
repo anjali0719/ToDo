@@ -31,6 +31,7 @@ def create_todo(req: CreateOrUpdateTodo, user: user_dependency, db: db_dependenc
         description= req.description,
         add_to_favourites= req.add_to_favourites,
         completed= req.completed,
+        scheduled_for= req.scheduled_for,
         user_id= user.get('user_id')
     )
 
@@ -103,6 +104,7 @@ def update_todo(db: db_dependency, user: user_dependency, todo_id: int, req: Cre
         todo.description = req.description
         todo.add_to_favourites = req.add_to_favourites
         todo.completed = req.completed
+        todo.scheduled_for = req.scheduled_for
 
         db.commit()
         db.refresh(todo)
