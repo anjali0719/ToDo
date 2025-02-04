@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi_pagination import add_pagination
 from session import Base, engine
 from api.api_v1.routers import user_routes, todo_routes
 
@@ -8,7 +9,7 @@ Base.metadata.create_all(engine)
 app.include_router(user_routes.router)
 app.include_router(todo_routes.router)
 
-
+add_pagination(app)
 # TO BE IMPLEMENETED:
 '''
 1. forgot password

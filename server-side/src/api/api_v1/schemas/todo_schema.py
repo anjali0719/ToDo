@@ -12,3 +12,9 @@ class CreateOrUpdateTodo(BaseModel):
     class Config:
         from_attributes = True
 
+class ToDoResponse(BaseModel):
+    title: str
+    description: str
+
+    class Config:
+        from_attributes = True
