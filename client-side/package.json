@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@angular/cli": "^19.1.5",
-    "@primeng/themes": "^19.0.5",
-    "primeng": "^19.0.5"
-  }
-}
