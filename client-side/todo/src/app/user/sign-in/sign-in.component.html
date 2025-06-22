@@ -1,0 +1,45 @@
+<!-- Login -->
+<div class="container">
+  <form
+    tuiAppearance="floating"
+    tuiCardLarge
+    tuiForm="m"
+    [formGroup]="signInForm"
+  >
+  
+    <header tuiHeader>
+      <h2 tuiTitle>
+        Sign In to your account
+        <span tuiSubtitle>Don't have an account? <a tuiLink [routerLink]="['/user/sign-up']" routerLinkActive="router-link-active">Sign Up</a></span>
+      </h2>
+    </header>
+
+    <tui-textfield>
+      <label tuiLabel>Email</label>
+      <input
+        formControlName="email"
+        placeholder="john@wick.com"
+        tuiTextfield
+        type="email"
+      />
+    </tui-textfield>
+    <tui-error
+      formControlName="email"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
+
+    <tui-textfield>
+      <label tuiLabel>Password</label>
+      <input formControlName="password" tuiTextfield type="password" />
+      <tui-icon tuiPassword />
+    </tui-textfield>
+    <tui-error
+      formControlName="password"
+      [error]="[] | tuiFieldError | async"
+    />
+
+    <footer>
+      <button tuiButton type="submit" (click)="onLogin()">Login</button>
+    </footer>
+  </form>
+</div>

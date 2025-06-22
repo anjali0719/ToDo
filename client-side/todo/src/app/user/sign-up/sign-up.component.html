@@ -1,0 +1,63 @@
+<!-- Create a new account -->
+<div class="container">
+  <form
+    tuiAppearance="floating"
+    tuiCardLarge
+    tuiForm="m"
+    [formGroup]="signInForm"
+    [style.max-width.rem]="32"
+  >
+    <header tuiHeader>
+      <h2 tuiTitle>
+        Register youself
+        <span tuiSubtitle>Already have an account? <a tuiLink [routerLink]="['/user/sign-in']" routerLinkActive="router-link-active">Sign In</a></span>
+      </h2>
+    </header>
+
+    <tui-textfield>
+      <label tuiLabel>First Name</label>
+      <input formControlName="firstName" placeholder="Camo" tuiTextfield />
+    </tui-textfield>
+    <tui-error
+      formControlName="firstName"
+      [error]="[] | tuiFieldError | async"
+    />
+
+    <tui-textfield>
+      <label tuiLabel>Last Name</label>
+      <input formControlName="lastName" placeholder="Walcom" tuiTextfield />
+    </tui-textfield>
+    <tui-error
+      formControlName="lastName"
+      [error]="[] | tuiFieldError | async"
+    />
+
+    <tui-textfield>
+      <label tuiLabel>Email</label>
+      <input
+        formControlName="email"
+        placeholder="john@wick.com"
+        tuiTextfield
+        type="email"
+      />
+    </tui-textfield>
+    <tui-error
+      formControlName="email"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
+
+    <tui-textfield>
+      <label tuiLabel>Password</label>
+      <input formControlName="password" tuiTextfield type="password" />
+      <tui-icon tuiPassword />
+    </tui-textfield>
+    <tui-error
+      formControlName="password"
+      [error]="[] | tuiFieldError | async"
+    />
+
+    <footer>
+      <button tuiButton (click)="onCreateAccount()">Create Account</button>
+    </footer>
+  </form>
+</div>

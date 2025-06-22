@@ -1,0 +1,43 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important;
+  position: fixed;
+  inset: 0;
+  overscroll-behavior: none;
+  /* Prevent scroll on mobile browsers */
+  touch-action: none;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: fixed;
+  inset: 0;
+  /* Prevent scrollbars from appearing */
+  max-width: 100vw;
+  max-height: 100vh;
+}
+form[tuiForm] {
+  width: 100%;
+  max-width: 32rem;
+  min-width: 0;
+  box-sizing: border-box;
+  background: transparent;
+}
+@media (max-width: 600px) {
+  .container {
+    padding: 0.5rem;
+  }
+  form[tuiForm] {
+    max-width: 100%;
+    padding: 1rem 0.5rem;
+  }
+}
