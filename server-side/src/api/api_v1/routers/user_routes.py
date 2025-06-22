@@ -82,7 +82,7 @@ def change_password(req: ChangePassword, db: db_dependency, user: user_dependenc
                 detail="User not authenticated"
             )
         
-        user_model = db.query(User).filter(User.id == user.get('id')).first()
+        user_model = db.query(User).filter(User.id == user.get('user_id')).first()
         if not bcrypt_context.verify(req.old_password, user_model.hashed_password):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
