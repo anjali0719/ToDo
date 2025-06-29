@@ -88,20 +88,26 @@
         <span class="todo-arrow">&#8250;</span>
       </div> -->
 
-       @for (todo of todos; track todo.id){
-        <div class="todo-item" (click)="selectToDo(todo)" [class.active]="selectedToDo?.id === todo.id">
-            <input type="checkbox" />
-            <span class="todo-task">{{ todo.description ? todo.description : "No decsription added yet!" }}</span>
-            <div class="todo-details">
-            <span class="todo-date"
-                ><span class="todo-icon">&#128197;</span> 22-03-22</span
-            >
-            <!-- <span class="todo-badge small">1 Subtasks</span> -->
-            <span class="todo-dot" style="background: #ff5a5f"></span>
-            <span class="todo-label">Personal</span>
-            </div>
-            <span class="todo-arrow">&#8250;</span>
+      @for (todo of todos; track todo.id){
+      <div
+        class="todo-item"
+        (click)="selectToDo(todo)"
+        [class.active]="selectedToDo?.id === todo.id"
+      >
+        <input type="checkbox" />
+        <span class="todo-task">{{
+          todo.description ? todo.description : "No decsription added yet!"
+        }}</span>
+        <div class="todo-details">
+          <span class="todo-date"
+            ><span class="todo-icon">&#128197;</span> 22-03-22</span
+          >
+          <!-- <span class="todo-badge small">1 Subtasks</span> -->
+          <span class="todo-dot" style="background: #ff5a5f"></span>
+          <span class="todo-label">Personal</span>
         </div>
+        <span class="todo-arrow">&#8250;</span>
+      </div>
       }
       <!-- <div class="todo-item">
         <input type="checkbox" />
@@ -135,7 +141,7 @@
     <textarea
       class="edit-textarea"
       placeholder="Description"
-      [value]="selectedToDo.description ? selectedToDo.description : '' "
+      [value]="selectedToDo.description ? selectedToDo.description : ''"
     ></textarea>
     <div class="edit-row">
       <label>List</label>

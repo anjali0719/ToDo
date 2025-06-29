@@ -17,13 +17,13 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './todo-dashboard.component.less'
 })
 export class TodoDashboardComponent implements OnInit {
-todos: ToDo[] = [
+  todos: ToDo[] = [
     { id: 1, title: "Renew driver's license", description: "Go for DL nenewal" },
-    { id: 2, title: "Consult accountant"},
+    { id: 2, title: "Consult accountant" },
     // ...other todos
   ];
 
-  constructor(public todoService: ToDoService){};
+  constructor(public todoService: ToDoService) { };
 
   protected readonly searchForm = new FormGroup({
     search: new FormControl(),
@@ -50,18 +50,24 @@ todos: ToDo[] = [
   selectedToDo: ToDo | null = null;
   isAddingNew: boolean = false;
 
-  selectToDo(todo: ToDo){
+  selectToDo(todo: ToDo) {
     this.selectedToDo = todo;
     this.isAddingNew = false;
   };
 
-  closeEditPanel(){
+  closeEditPanel() {
     this.selectedToDo = null;
     this.isAddingNew = false;
   };
 
-  openAddNewTask(){
+  openAddNewTask() {
+    this.selectedToDo = {
+      id: null,
+      title: '',
+      description: '',
+    };
     this.isAddingNew = true;
+    this.addUpdateTodoForm.reset();
   };
 
 }

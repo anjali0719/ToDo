@@ -2,7 +2,7 @@ export type Status = 'to-start' | 'in-progress' | 'completed';
 export type Priority = 'high' | 'medium' | 'low';
 
 export interface ToDo {
-  id: number;
+  id: number | null;
   title: string;
   description?: string;
   dueDate?: Date;

@@ -10,9 +10,9 @@ import { GetTodoResponseType } from "./ToDo.model"
 
 export class ToDoService {
 
-    constructor(public httpClient: HttpClient){};
+    constructor(public httpClient: HttpClient) { };
 
-    createToDo(title: string, description: string, addToFav: boolean, completed: boolean, scheduledFor: Date){
+    createToDo(title: string, description: string, addToFav: boolean, completed: boolean, scheduledFor: Date) {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('TOKEN')}`
@@ -25,17 +25,17 @@ export class ToDoService {
                 add_to_favourites: addToFav,
                 completed: completed,
                 scheduled_for: scheduledFor
-            }, 
-            {headers}
+            },
+            { headers }
         )
     };
 
-    getToDo(): Observable<GetTodoResponseType>{
+    getToDo(): Observable<GetTodoResponseType> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('TOKEN')}`
         })
 
-        return this.httpClient.get<GetTodoResponseType>('http://127.0.0.1:8000/api/vi/get-todo', {headers})
+        return this.httpClient.get<GetTodoResponseType>('http://127.0.0.1:8000/api/vi/get-todo', { headers })
     };
 };
