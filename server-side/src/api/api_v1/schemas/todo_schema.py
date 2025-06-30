@@ -13,8 +13,12 @@ class CreateOrUpdateTodo(BaseModel):
         from_attributes = True
 
 class ToDoResponse(BaseModel):
+    id: int
     title: str
     description: str
+    add_to_favourites: bool
+    completed: bool
+    scheduled_for: datetime
 
     class Config:
         from_attributes = True

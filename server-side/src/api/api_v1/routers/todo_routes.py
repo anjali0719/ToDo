@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Annotated
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
-from fastapi_pagination import paginate, LimitOffsetPage
+from fastapi_pagination import LimitOffsetPage, Params
+from fastapi_pagination.ext.sqlalchemy import paginate
 from session import get_db
 from models.todo import ToDo
 from dependencies import get_current_user
@@ -43,10 +44,10 @@ def create_todo(req: CreateOrUpdateTodo, user: user_dependency, db: db_dependenc
 
 
 # list all the todo's for logged in user
-@router.get('/get-todo', response_model=LimitOffsetPage[ToDoResponse])
-def get_todo_list(user: user_dependency, db: db_dependency):
-    todo_list = db.query(ToDo).filter(ToDo.user_id == user.get('user_id')).all()
-    return paginate(todo_list)
+@router.get('/todo-list', response_model=LimitOffsetPage[ToDoResponse])
+def todo_list(user: user_dependency, db: db_dependency, params: Params = Depends()):
+    todo_list = db.query(ToDo).filter(ToDo.user_id == user.get('user_id'))
+    return paginate(todo_list, params)
 
 
 # search for specific todo with either title or description
