@@ -17,7 +17,7 @@ import {
 } from '@taiga-ui/core';
 import { TuiFieldErrorPipe, TuiPassword } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiForm, TuiHeader } from '@taiga-ui/layout';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../user.service';
 import { SignUpResponseType } from '../user.model';
 
@@ -46,7 +46,10 @@ import { SignUpResponseType } from '../user.model';
 })
 export class SignUpComponent {
 
-  constructor(public userService: UserService) { };
+  constructor(
+    public userService: UserService,
+    public router: Router
+  ) { };
 
   user: SignUpResponseType | undefined;
 
@@ -62,9 +65,11 @@ export class SignUpComponent {
       next: (response: SignUpResponseType) => {
         this.user = response;
         localStorage.setItem("EMAIL", response.email)
+        this.router.navigate(['/user/sign-in/'])
       },
       error: error => console.log(`Error: ${error}`)
     })
+    this.signInForm.reset()
   };
 
 }

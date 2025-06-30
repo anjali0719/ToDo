@@ -136,12 +136,11 @@
       type="text"
       placeholder="Title"
       formControlName="title"
-      [value]="selectedToDo.title"
     />
     <textarea
       class="edit-textarea"
       placeholder="Description"
-      [value]="selectedToDo.description ? selectedToDo.description : ''"
+      formControlName="description"
     ></textarea>
     <div class="edit-row">
       <label>List</label>
@@ -172,7 +171,7 @@
             </div> -->
     </div>
     <div class="edit-footer">
-      <button class="edit-delete" tuiButton [disabled]="isAddingNew">
+      <button class="edit-delete" tuiButton [disabled]="isAddingNew" (click)="deleteTask(selectedToDo.id!)">
         Delete Task
       </button>
       <button class="edit-save" tuiButton>

@@ -17,7 +17,7 @@ import {
 } from '@taiga-ui/core';
 import { TuiFieldErrorPipe, TuiPassword } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiForm, TuiHeader } from '@taiga-ui/layout';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../user.service';
 import { SignInResponseType } from '../user.model';
 
@@ -39,14 +39,18 @@ import { SignInResponseType } from '../user.model';
     TuiPassword,
     TuiIcon,
     TuiLink,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.less'
 })
 export class SignInComponent {
 
-  constructor(public userService: UserService) { };
+  constructor(
+    public userService: UserService,
+    public router: Router,
+  ) { };
+
 
   loginToken: SignInResponseType | undefined;
 
@@ -60,9 +64,11 @@ export class SignInComponent {
       next: (response: SignInResponseType) => {
         this.loginToken = response;
         localStorage.setItem("TOKEN", response.access_token)
+        this.router.navigate(['/todo/todo-dashboard/'])
       },
       error: error => console.log(`Error in SignIn: ${error}`)
     })
+    this.signInForm.reset()
   };
 
 }

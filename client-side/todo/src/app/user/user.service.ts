@@ -31,17 +31,21 @@ export class UserService {
     signIn(email: string, password: string): Observable<SignInResponseType> {
 
         const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
         });
 
-        return this.httpClient.post<SignInResponseType>('http://127.0.0.1:8000/api/vi/token/', { email, password }, { headers })
+        const body = new URLSearchParams();
+        body.set('username', email)
+        body.set('password', password)
+
+        return this.httpClient.post<SignInResponseType>('http://127.0.0.1:8000/api/vi/token/', body.toString(), { headers })
     };
 
     changePassword(oldPassword: string, newPassword: string): Observable<{ status: number; message: string }> {
 
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
-            'Authorization': `Token ${localStorage.getItem('TOKEN')}`
+            'Authorization': `Bearer ${localStorage.getItem('TOKEN')}`
         });
 
         return this.httpClient.put<{ status: number; message: string }>('http://127.0.0.1:8000/api/vi/change-password/',

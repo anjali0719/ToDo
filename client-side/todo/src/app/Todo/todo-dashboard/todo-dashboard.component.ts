@@ -1,9 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { GetTodoResponseType, ToDo } from '../ToDo.model';
 import { ToDoService } from '../ToDo.service';
 import { TuiSearch } from '@taiga-ui/layout';
-import { TuiButton, TuiTextfield } from '@taiga-ui/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { 
+  TuiButton, 
+  TuiTextfield 
+} from '@taiga-ui/core';
+import { 
+  FormControl, 
+  FormGroup, 
+  ReactiveFormsModule 
+} from '@angular/forms';
+import { 
+  GetTodoResponseType, 
+  ToDo 
+} from '../ToDo.model';
 
 @Component({
   selector: 'app-todo-dashboard',
@@ -38,7 +48,7 @@ export class TodoDashboardComponent implements OnInit {
   })
 
   ngOnInit(): void {
-    this.todoService.getToDo().subscribe({
+    this.todoService.toDoList().subscribe({
       next: (response: GetTodoResponseType) => {
         // debugger
         this.todos = response.items;
@@ -49,9 +59,12 @@ export class TodoDashboardComponent implements OnInit {
 
   selectedToDo: ToDo | null = null;
   isAddingNew: boolean = false;
+  deleteSuccessMsg: string = '';
 
   selectToDo(todo: ToDo) {
     this.selectedToDo = todo;
+    this.addUpdateTodoForm.get('title')?.patchValue(todo.title ?? '');
+    this.addUpdateTodoForm.get('description')?.patchValue(todo.description ?? '');
     this.isAddingNew = false;
   };
 
@@ -68,6 +81,15 @@ export class TodoDashboardComponent implements OnInit {
     };
     this.isAddingNew = true;
     this.addUpdateTodoForm.reset();
+  };
+
+  deleteTask(toDoId: number){
+    this.todoService.deleteToDo(toDoId).subscribe({
+      next: (response: {status: number, message: string}) => {
+        this.deleteSuccessMsg = response.message
+      },
+      error: err => console.log(`Error while deleting Task: ${err}`)
+    });
   };
 
 }
