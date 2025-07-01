@@ -1,6 +1,5 @@
 .sidebar {
   width: 300px;
-  min-height: 100vh;
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 2px 16px 0 rgba(60, 60, 60, 0.08);
@@ -140,6 +139,12 @@
   background: #f4f8f6;
   min-height: 100vh;
   padding: 24px 0 24px 24px;
+  display: flex;
+  flex-wrap: wrap; // Allow wrapping on small screens
+  align-items: flex-start;
+  background: #f4f8f6;
+  min-height: 100vh;
+  padding: 24px 0 24px 24px;
 }
 
 .todo-main {
@@ -152,6 +157,10 @@
   box-shadow: 0 2px 16px 0 rgba(60, 60, 60, 0.08);
   display: flex;
   flex-direction: column;
+  flex: 1 1 340px;
+  min-width: 0;
+  margin-left: 24px;
+  padding: 32px 24px;
 }
 
 .todo-header {
@@ -370,8 +379,8 @@
 .edit-select,
 .edit-date {
   flex: 1;
-  padding: 8px 12px;
-  border-radius: 8px;
+  // padding: 8px 12px;
+  // border-radius: 8px;
   border: 1px solid #e0e0e0;
   background: #f7f7f7;
   font-size: 1rem;
@@ -467,4 +476,210 @@
 
 .edit-save:hover {
   background: #ffe066;
+}
+
+/* Edit panel container */
+.todo-edit-panel {
+    background: #fff;
+    border-radius: 22px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    padding: 32px 32px 24px 32px;
+    width: 370px;
+    min-width: 320px;
+    max-width: 400px;
+    // position: fixed;
+    // top: 32px;
+    // right: 32px;
+    // z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-left: 24px;
+
+    width: 370px;
+    min-width: 280px;
+    max-width: 100vw;
+    margin-left: 24px;
+    flex-shrink: 0;
+}
+
+/* Header */
+.edit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+.edit-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #222;
+}
+.edit-close {
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    color: #bbb;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.edit-close:hover {
+    color: #ff5a5f;
+}
+
+/* Inputs */
+.edit-row,
+.tui-textfield,
+.edit-textarea {
+    margin-bottom: 18px;
+    width: 100%;
+}
+.tui-textfield,
+.edit-textarea textarea,
+.edit-date input {
+    border-radius: 12px !important;
+    border: 1px solid #e6e6e6 !important;
+    background: #fafbfc !important;
+    font-size: 1rem;
+    padding: 12px 14px !important;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border 0.2s;
+}
+.tui-textfield:focus-within,
+.edit-textarea textarea:focus,
+.edit-date input:focus {
+    border: 1.5px solid #4fc3f7 !important;
+    outline: none;
+}
+
+/* Labels */
+label, [tuiLabel] {
+    font-size: 0.98rem;
+    color: #888;
+    margin-bottom: 6px;
+    display: block;
+    font-weight: 500;
+}
+
+/* List dropdown */
+.edit-select input {
+    cursor: pointer;
+    background: #fafbfc;
+}
+
+/* Calendar input */
+.edit-date input {
+    background: #fafbfc;
+    border-radius: 12px;
+    border: 1px solid #e6e6e6;
+    font-size: 1rem;
+    padding: 12px 14px;
+}
+
+/* Tags */
+.edit-tags {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+}
+.edit-tag {
+    background: #e6f2f7;
+    color: #3a3a3a;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 18px;
+    font-size: 0.98rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.edit-tag.add-tag {
+    background: #fff;
+    color: #4fc3f7;
+    border: 1.5px dashed #4fc3f7;
+}
+.edit-tag:hover {
+    background: #4fc3f7;
+    color: #fff;
+}
+
+/* Footer buttons */
+.edit-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+}
+.edit-delete {
+    background: #fff;
+    color: #222;
+    border: 1.5px solid #e6e6e6;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border 0.2s, color 0.2s;
+}
+.edit-delete:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.edit-delete:not(:disabled):hover {
+    border: 1.5px solid #ff5a5f;
+    color: #ff5a5f;
+}
+.edit-save {
+    background: #ffd600;
+    color: #222;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.edit-save:hover {
+    background: #ffe066;
+}
+
+@media (max-width: 1100px) {
+  .todo-edit-panel {
+    width: 100%;
+    max-width: 100vw;
+    margin-left: 0;
+    margin-top: 24px;
+  }
+  .dashboard-container {
+    flex-direction: column;
+    padding: 12px;
+  }
+  .todo-main {
+    margin-left: 0;
+    margin-top: 24px;
+    padding: 24px 8px;
+  }
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 18px;
+    padding: 16px 8px;
+  }
+  .todo-main,
+  .todo-edit-panel {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 16px 4px;
+  }
+  .edit-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
 }

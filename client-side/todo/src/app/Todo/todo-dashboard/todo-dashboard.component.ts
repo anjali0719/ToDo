@@ -1,19 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
+import {
+  TuiButton,
+  TuiTextfield
+} from '@taiga-ui/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
+import {
+  GetTodoResponseType,
+  ToDo
+} from '../ToDo.model';
+import {
+  TuiChevron,
+  TuiDataListWrapper,
+  TuiInputDate,
+  TuiSelect,
+  TuiTextarea
+} from '@taiga-ui/kit';
 import { ToDoService } from '../ToDo.service';
 import { TuiSearch } from '@taiga-ui/layout';
-import { 
-  TuiButton, 
-  TuiTextfield 
-} from '@taiga-ui/core';
-import { 
-  FormControl, 
-  FormGroup, 
-  ReactiveFormsModule 
-} from '@angular/forms';
-import { 
-  GetTodoResponseType, 
-  ToDo 
-} from '../ToDo.model';
+import { TuiDay } from '@taiga-ui/cdk/date-time';
 
 @Component({
   selector: 'app-todo-dashboard',
@@ -21,24 +34,30 @@ import {
     TuiSearch,
     TuiTextfield,
     ReactiveFormsModule,
-    TuiButton
+    TuiButton,
+    TuiInputDate,
+    TuiTextarea,
+    TuiChevron,
+    TuiDataListWrapper,
+    TuiSelect,
+    FormsModule
   ],
   templateUrl: './todo-dashboard.component.html',
-  styleUrl: './todo-dashboard.component.less'
+  styleUrl: './todo-dashboard.component.less',
+  encapsulation: ViewEncapsulation.None
 })
 export class TodoDashboardComponent implements OnInit {
-  todos: ToDo[] = [
-    { id: 1, title: "Renew driver's license", description: "Go for DL nenewal" },
-    { id: 2, title: "Consult accountant" },
-    // ...other todos
-  ];
 
+  // Constructors
   constructor(public todoService: ToDoService) { };
+
+  // FormControls
+  dateControl = new FormControl(new TuiDay(2025, 6, 30));
 
   protected readonly searchForm = new FormGroup({
     search: new FormControl(),
+    value: new FormControl()
   });
-
 
   addUpdateTodoForm = new FormGroup({
     title: new FormControl(''),
@@ -47,6 +66,7 @@ export class TodoDashboardComponent implements OnInit {
     scheduleFor: new FormControl(Date)
   })
 
+  // Oninit
   ngOnInit(): void {
     this.todoService.toDoList().subscribe({
       next: (response: GetTodoResponseType) => {
@@ -55,12 +75,20 @@ export class TodoDashboardComponent implements OnInit {
       },
       error: error => console.log(`Error in get-todo: ${error}`)
     });
-  }
+  };
 
+  // Define Variables
+  protected readonly listOptions = [
+    'Personal',
+    'Work',
+    'List 1'
+  ];
+  todos: ToDo[] = [];
   selectedToDo: ToDo | null = null;
   isAddingNew: boolean = false;
   deleteSuccessMsg: string = '';
 
+  // API Calls and Other action methods
   selectToDo(todo: ToDo) {
     this.selectedToDo = todo;
     this.addUpdateTodoForm.get('title')?.patchValue(todo.title ?? '');
@@ -83,9 +111,9 @@ export class TodoDashboardComponent implements OnInit {
     this.addUpdateTodoForm.reset();
   };
 
-  deleteTask(toDoId: number){
+  deleteTask(toDoId: number) {
     this.todoService.deleteToDo(toDoId).subscribe({
-      next: (response: {status: number, message: string}) => {
+      next: (response: { status: number, message: string }) => {
         this.deleteSuccessMsg = response.message
       },
       error: err => console.log(`Error while deleting Task: ${err}`)

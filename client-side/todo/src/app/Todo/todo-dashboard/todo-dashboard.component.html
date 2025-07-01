@@ -5,7 +5,6 @@
       <span class="sidebar-menu-icon">&#9776;</span>
     </div>
     <div class="sidebar-search" [formGroup]="searchForm">
-      <!-- <input type="text" placeholder="Search" /> -->
       <search tuiSearch>
         <tui-textfield iconStart="@tui.search">
           <input formControlName="search" placeholder="Search" tuiTextfield />
@@ -26,12 +25,6 @@
         <span class="sidebar-icon">&hearts;</span>Favourites
         <span class="sidebar-badge">5</span>
       </div>
-      <!-- <div class="sidebar-item">
-        <span class="sidebar-icon">&#128197;</span> Calendar
-      </div> -->
-      <!-- <div class="sidebar-item">
-        <span class="sidebar-icon">&#128196;</span> Sticky Wall
-      </div> -->
     </div>
     <div class="sidebar-section">
       <div class="sidebar-section-title">CATEGORY</div>
@@ -43,10 +36,6 @@
         <span class="sidebar-dot" style="background: #4fc3f7"></span> Work
         <span class="sidebar-badge">6</span>
       </div>
-      <!-- <div class="sidebar-item">
-        <span class="sidebar-dot" style="background: #ffd600"></span> List 1
-        <span class="sidebar-badge">3</span>
-      </div> -->
       <div class="sidebar-item add-list">
         <span class="sidebar-icon">+</span> Add New Category
       </div>
@@ -77,17 +66,6 @@
       <span class="todo-add-icon">+</span> Add New Task
     </div>
     <div class="todo-list">
-      <!-- <div class="todo-item">
-        <input type="checkbox" />
-        <span class="todo-task">Research content ideas</span>
-        <span class="todo-arrow">&#8250;</span>
-      </div> -->
-      <!-- <div class="todo-item">
-        <input type="checkbox" />
-        <span class="todo-task">Create a database of guest authors</span>
-        <span class="todo-arrow">&#8250;</span>
-      </div> -->
-
       @for (todo of todos; track todo.id){
       <div
         class="todo-item"
@@ -109,20 +87,6 @@
         <span class="todo-arrow">&#8250;</span>
       </div>
       }
-      <!-- <div class="todo-item">
-        <input type="checkbox" />
-        <span class="todo-task">Consult accountant</span>
-        <div class="todo-details">
-          <span class="todo-dot" style="background:#FFD600"></span> <span class="todo-label">List</span>
-          <span class="todo-badge small">3 Subtasks</span>
-        </div>
-        <span class="todo-arrow">&#8250;</span>
-      </div> -->
-      <!-- <div class="todo-item">
-        <input type="checkbox" />
-        <span class="todo-task">Print business card</span>
-        <span class="todo-arrow">&#8250;</span>
-      </div> -->
     </div>
   </div>
   @if(selectedToDo){
@@ -131,28 +95,54 @@
       <span class="edit-title">Task Details:</span>
       <button class="edit-close" (click)="closeEditPanel()">&times;</button>
     </div>
-    <input
-      class="edit-input"
-      type="text"
-      placeholder="Title"
-      formControlName="title"
-    />
-    <textarea
+    <tui-textfield tuiTextfieldSize="m">
+      <!-- <label tuiLabel></label> -->
+      <textarea
+        placeholder="Title"
+        formControlName="title"
+        tuiTextarea
+      ></textarea>
+    </tui-textfield>
+    <tui-textfield
       class="edit-textarea"
-      placeholder="Description"
-      formControlName="description"
-    ></textarea>
-    <div class="edit-row">
-      <label>List</label>
-      <select class="edit-select">
-        <option>Personal</option>
-        <option>Work</option>
-        <option>List 1</option>
-      </select>
+      [style.margin-block-end.rem]="1"
+      iconStart="@tui.pencil"
+      tuiTextfieldSize="l"
+    >
+      <!-- <label tuiLabel>Limit</label> -->
+      <textarea
+        placeholder="Description"
+        tuiTextarea
+        formControlName="description"
+      ></textarea>
+    </tui-textfield>
+    <div class="edit-row" [formGroup]="searchForm">
+      <label tuiLabel>List</label>
+      <tui-textfield
+        class="edit-select"
+        tuiChevron
+        tuiTextfieldSize="m"
+        [tuiTextfieldCleaner]="false"
+      >
+        <input
+          placeholder="I am placeholder"
+          tuiSelect
+          formControlName="value"
+        />
+        <tui-data-list-wrapper
+          *tuiTextfieldDropdown
+          new
+          [items]="listOptions"
+        />
+      </tui-textfield>
     </div>
+
     <div class="edit-row">
-      <!-- <label>Due date</label>
-      <input class="edit-date" type="date" value="2022-03-11" /> -->
+      <label tuiLabel>Choose a date</label>
+      <tui-textfield class="edit-date">
+        <input tuiInputDate [formControl]="dateControl" />
+        <tui-calendar *tuiTextfieldDropdown />
+      </tui-textfield>
     </div>
     <div class="edit-row">
       <label>Tags</label>
@@ -161,17 +151,13 @@
         <button class="edit-tag add-tag">+ Add Tag</button>
       </div>
     </div>
-    <div class="edit-subtasks">
-      <!-- <div class="edit-subtasks-header">Subtasks:</div>
-            <div class="edit-subtask add-subtask">
-                <span class="edit-add-icon">+</span> Add New Subtask
-            </div>
-            <div class="edit-subtask">
-                <input type="checkbox" /> Subtask
-            </div> -->
-    </div>
     <div class="edit-footer">
-      <button class="edit-delete" tuiButton [disabled]="isAddingNew" (click)="deleteTask(selectedToDo.id!)">
+      <button
+        class="edit-delete"
+        tuiButton
+        [disabled]="isAddingNew"
+        (click)="deleteTask(selectedToDo.id!)"
+      >
         Delete Task
       </button>
       <button class="edit-save" tuiButton>
