@@ -13,17 +13,48 @@
     </div>
     <div class="sidebar-section">
       <div class="sidebar-section-title">TASKS</div>
-      <div class="sidebar-item [active]='false'">
-        <span class="sidebar-icon">&#9776;</span>Today
-        <span class="sidebar-badge">5</span>
+      <div
+        class="sidebar-item"
+        [class.active]="selectedTab === 'today'"
+        (click)="onTabSelection('today')"
+      >
+        <span class="sidebar-icon"
+          ><tui-icon icon="@tui.list-todo" [style.font-size.rem]="1.2" /></span
+        >Today
+        <span class="sidebar-badge">{{ count.today }}</span>
       </div>
-      <div class="sidebar-item">
-        <span class="sidebar-icon">&#187;</span> Upcoming
-        <span class="sidebar-badge">12</span>
+      <div
+        class="sidebar-item"
+        [class.active]="selectedTab === 'upcoming'"
+        (click)="onTabSelection('upcoming')"
+      >
+        <span class="sidebar-icon"
+          ><tui-icon icon="@tui.chevrons-up" [style.font-size.rem]="1.2"
+        /></span>
+        Upcoming
+        <span class="sidebar-badge">{{ count.upcoming }}</span>
       </div>
-      <div class="sidebar-item">
-        <span class="sidebar-icon">&hearts;</span>Favourites
-        <span class="sidebar-badge">5</span>
+      <div
+        class="sidebar-item"
+        [class.active]="selectedTab === 'favourites'"
+        (click)="onTabSelection('favourites')"
+      >
+        <span class="sidebar-icon"
+          ><tui-icon icon="@tui.heart" [style.font-size.rem]="1.2" /></span
+        >Favourites
+        <span class="sidebar-badge">{{ count.favourites }}</span>
+      </div>
+      <div
+        class="sidebar-item"
+        [class.active]="selectedTab === 'completed'"
+        (click)="onTabSelection('completed')"
+      >
+        <span class="sidebar-icon"
+          ><tui-icon
+            icon="@tui.circle-check"
+            [style.font-size.rem]="1.2" /></span
+        >Completed
+        <span class="sidebar-badge">{{ count.completed }}</span>
       </div>
     </div>
     <div class="sidebar-section">
@@ -50,17 +81,23 @@
     </div>
     <div class="sidebar-footer">
       <div class="sidebar-item">
-        <span class="sidebar-icon">&#9776;</span> Settings
+        <span class="sidebar-icon"
+          ><tui-icon icon="@tui.settings" [style.font-size.rem]="1.2"
+        /></span>
+        Settings
       </div>
-      <div class="sidebar-item">
-        <span class="sidebar-icon">&#8635;</span> Sign out
+      <div class="sidebar-item" (click)="signOut()">
+        <span class="sidebar-icon"
+          ><tui-icon icon="@tui.log-out" [style.font-size.rem]="1.2"
+        /></span>
+        Sign out
       </div>
     </div>
   </div>
   <div class="todo-main">
     <div class="todo-header">
-      <span class="todo-title">Today</span>
-      <span class="todo-badge">5</span>
+      <span class="todo-title">{{ selectedTab.replace(selectedTab[0], selectedTab[0].toUpperCase()) }}</span>
+      <span class="todo-badge">{{ count[selectedTab] }}</span>
     </div>
     <div class="todo-add" (click)="openAddNewTask()">
       <span class="todo-add-icon">+</span> Add New Task
@@ -78,7 +115,9 @@
         }}</span>
         <div class="todo-details">
           <span class="todo-date"
-            ><span class="todo-icon">&#128197;</span> 22-03-22</span
+            ><span class="todo-icon"
+              ><tui-icon icon="@tui.calendar" [style.font-size.rem]="1" /></span
+            >{{ todo.scheduled_for.split("T")[0] }}</span
           >
           <!-- <span class="todo-badge small">1 Subtasks</span> -->
           <span class="todo-dot" style="background: #ff5a5f"></span>
@@ -89,14 +128,13 @@
       }
     </div>
   </div>
-  @if(selectedToDo){
+  @if(selectedToDo || isAddingNew){
   <div class="todo-edit-panel" [formGroup]="addUpdateTodoForm">
     <div class="edit-header">
       <span class="edit-title">Task Details:</span>
       <button class="edit-close" (click)="closeEditPanel()">&times;</button>
     </div>
     <tui-textfield tuiTextfieldSize="m">
-      <!-- <label tuiLabel></label> -->
       <textarea
         placeholder="Title"
         formControlName="title"
@@ -109,7 +147,6 @@
       iconStart="@tui.pencil"
       tuiTextfieldSize="l"
     >
-      <!-- <label tuiLabel>Limit</label> -->
       <textarea
         placeholder="Description"
         tuiTextarea
@@ -136,11 +173,15 @@
         />
       </tui-textfield>
     </div>
-
     <div class="edit-row">
       <label tuiLabel>Choose a date</label>
-      <tui-textfield class="edit-date">
-        <input tuiInputDate [formControl]="dateControl" />
+      <tui-textfield class="edit-date" [disabledItemHandler]="handler">
+        <input
+          tuiInputDate
+          [max]="max"
+          [min]="min"
+          formControlName="dateControl"
+        />
         <tui-calendar *tuiTextfieldDropdown />
       </tui-textfield>
     </div>
@@ -151,18 +192,36 @@
         <button class="edit-tag add-tag">+ Add Tag</button>
       </div>
     </div>
+    <div class="edit-row">
+      <label>Add to Favourites</label>
+      <div class="edit-tags">
+        <input
+          formControlName="addToFav"
+          tuiLike="var(--tui-status-negative)"
+          type="checkbox"
+        />
+      </div>
+      <label>Mark as Completed</label>
+      <div class="edit-tags">
+        <input formControlName="completed" tuiCheckbox type="checkbox" />
+      </div>
+    </div>
     <div class="edit-footer">
+      @if(!isAddingNew){
       <button
         class="edit-delete"
         tuiButton
-        [disabled]="isAddingNew"
-        (click)="deleteTask(selectedToDo.id!)"
+        (click)="deleteTask(selectedToDo!.id!)"
       >
         Delete Task
       </button>
-      <button class="edit-save" tuiButton>
-        {{ isAddingNew ? "Add task" : "Save changes" }}
+      <button class="edit-save" tuiButton (click)="updateTodo()">
+        Save changes
       </button>
+      }@else {
+      <button class="edit-save" tuiButton (click)="createTodo()">
+        Add task</button
+      >}
     </div>
   </div>
   }
