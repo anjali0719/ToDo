@@ -1,5 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
+from fastapi_pagination import Page
 
 class CreateOrUpdateTodo(BaseModel):
     title: str = Field(min_length=3)
@@ -22,3 +23,13 @@ class ToDoResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class Counts(BaseModel):
+    today: int
+    upcoming: int
+    favourites: int
+    completed: int
+
+class ToDoListResponse(BaseModel):
+    counts: Counts
+    results: Page[ToDoResponse]
